@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, useState } from "react";
+import Form from "./components/Form";
+import Header from "./components/Header";
+import Message from "./components/Message";
+import Result from "./components/Result";
+import Spinner from "./components/Spinner";
 
 function App() {
+  const [quantity, setQuantity] = useState(0);
+  const [deadline, setDeadline] = useState("");
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  let component;
+
+  if (loading) {
+    component = <Spinner />;
+  } else if (total === 0) {
+    component = <Message />;
+  } else {
+    component = (
+      <Result total={total} deadline={deadline} quantity={quantity} />
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Header title="Cotizador de Préstamos" />
+
+      <div className="container">
+        <Form
+          quantity={quantity}
+          setQuantity={setQuantity}
+          deadline={deadline}
+          setDeadline={setDeadline}
+          setTotal={setTotal}
+          setLoading={setLoading}
+        />
+        <div className="mensajes">{component}</div>
+      </div>
+    </Fragment>
   );
 }
 
